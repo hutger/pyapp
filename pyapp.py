@@ -10,7 +10,7 @@ def pyapp():
   <body style="background-color:green;">
 
   <h1>PyAPP Application</h1>
-  <p><h3> Version 1 </h3></p> 
+  <p><h3> Version 1</h3></p> 
 
   </body>
   </html>
