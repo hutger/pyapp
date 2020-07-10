@@ -14,18 +14,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
-    - name: docker login
-      env:
-    #    DOCKER_USER: ${{ secrets.DOCKER_USER}}
-         GIT_PASSWORD: ${{ secrets.GIT_PASSWORD}}
-      run: |
-        docker login docker.pkg.github.com --username ${GITHUB_ACTOR} --password ${GIT_PASSWORD}
         
     - name: Build the Docker image
-      run: |
-        docker build . --file Dockerfile --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/pyapp:0.1
+      env: 
+        REPO_NAME: $(echo "${GITHUB_REPOSITORY}" | awk -F / '{print $2}')
+        run: |
+          docker build . --file Dockerfile --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/REPO_NAME:${GITHUB_REF##*/}
 
-    - name: Pushing to Registry
+    - name: Pushing to the Registry
+      env:
+         GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
       run: |
-        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}/pyapp:0.1
+        docker login docker.pkg.github.com --username ${GITHUB_ACTOR} -p ${GIT_TOKEN}  && \
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}/REPO_NAME:${GITHUB_REF##*/}
+
+
+
+
