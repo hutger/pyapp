@@ -19,14 +19,14 @@ jobs:
       env: 
         REPO_NAME: $(echo "${GITHUB_REPOSITORY}" | awk -F / '{print $2}')
       run: |
-        docker build . --file Dockerfile --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/REPO_NAME:${GITHUB_REF##*/}
+        docker build . --file Dockerfile --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/${REPO_NAME}:${GITHUB_REF##*/}
 
     - name: Pushing to the Registry
       env:
          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
       run: |
         docker login docker.pkg.github.com --username ${GITHUB_ACTOR} -p ${GIT_TOKEN}  && \
-        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}/REPO_NAME:${GITHUB_REF##*/}
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}/${REPO_NAME}:${GITHUB_REF##*/}
 
 
 
