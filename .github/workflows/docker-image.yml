@@ -24,8 +24,8 @@ jobs:
         
     - name: Build the Docker image
       run: |
-        docker build . --file Dockerfile --tag docker.pkg.github.com/${GITHUB_REPOSITORY}:${GITHUB_REPOSITORY}
+        docker build . --file Dockerfile --tag docker.pkg.github.com/${GITHUB_REPOSITORY}:${GITHUB_REF}
 
     - name: Pushing to Registry
       run: |
-        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}:${GITHUB_REPOSITORY}
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}:${GITHUB_REF}
